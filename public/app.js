@@ -31,6 +31,7 @@ function show(name) {
     const el = document.getElementById('screen-' + s);
     if (el) el.hidden = (s !== name);
   });
+  state.currentScreen = name;
   document.getElementById('navBack').hidden = (name === 'home');
   window.scrollTo(0, 0);
 }
@@ -226,8 +227,15 @@ function renderInfo() {
 function wire() {
   document.getElementById('navInfo').addEventListener('click', () => { renderInfo(); show('info'); });
   document.getElementById('navBack').addEventListener('click', () => {
-    Playback.stop();
-    show(state.currentPreset ? 'player' : 'home');
+    if (state.currentScreen === 'player') {
+      // プレイヤーからはホームへ戻る（再生を止めてプリセット選択へ）
+      Playback.stop();
+      state.currentPreset = null;
+      show('home');
+    } else {
+      // 情報/フィルタからはプレイヤーへ戻る（再生は止めない）。プリセット未起動ならホーム。
+      show(state.currentPreset ? 'player' : 'home');
+    }
   });
 
   document.getElementById('btnNext').addEventListener('click', () => Playback.next());

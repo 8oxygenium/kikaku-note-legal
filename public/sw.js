@@ -3,7 +3,7 @@
  *  - データ/音声（/data/・/audio/）: network-first（オンラインなら最新、オフラインはキャッシュ）
  *    → 条文JSONを差し替えても、cache-first にマスクされず更新が見える。
  */
-const CACHE = 'roppou-v0.1.1';
+const CACHE = 'roppou-v0.1.2';
 const SHELL = [
   './',
   './index.html',
