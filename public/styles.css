@@ -1,0 +1,231 @@
+:root {
+  --bg: #0f1b2d;
+  --bg-card: #1a2b44;
+  --bg-card-2: #21314a;
+  --navy: #1f3a5f;
+  --navy-light: #2e5a8f;
+  --text: #eef3fa;
+  --text-dim: #9fb2cc;
+  --accent: #f0a23b;
+  --accent-soft: #f6c074;
+  --line: #2c425f;
+  --ok: #57c08a;
+  --radius: 14px;
+  --maxw: 640px;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- topbar ---- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: calc(env(safe-area-inset-top) + 10px) 14px 10px;
+  background: var(--navy);
+  border-bottom: 1px solid var(--line);
+}
+.app-title {
+  flex: 1;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 1.4rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.icon-btn:active { background: rgba(255,255,255,0.12); }
+
+/* ---- layout ---- */
+#app {
+  flex: 1;
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 18px 16px calc(env(safe-area-inset-bottom) + 28px);
+}
+.screen { animation: fade .2s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(6px);} to { opacity:1; transform:none; } }
+
+.lead { font-size: 1.1rem; margin: 6px 0 18px; }
+.hint { color: var(--text-dim); font-size: .85rem; margin-top: 18px; }
+.screen-h2 { font-size: 1.15rem; margin: 4px 0 6px; }
+
+/* ---- home preset list ---- */
+.preset-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.preset {
+  width: 100%;
+  text-align: left;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  color: var(--text);
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.preset:active { transform: scale(.99); }
+.preset[disabled] { opacity: .45; cursor: default; }
+.preset .badge {
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--accent);
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+.preset .badge.soon { background: var(--text-dim); }
+
+/* ---- player ---- */
+.player-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+.law-name { font-weight: 700; color: var(--accent-soft); }
+.text-btn {
+  background: none; border: none; color: var(--text-dim);
+  font-size: .82rem; cursor: pointer; text-decoration: underline;
+}
+.article-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  min-height: 46dvh;
+  max-height: 56dvh;
+  overflow-y: auto;
+}
+.article-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.article-no { font-size: 1.25rem; font-weight: 700; color: var(--accent); }
+.article-caption { color: var(--text-dim); font-size: .95rem; }
+.article-text { margin: 0; font-size: 1.05rem; }
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin: 22px 0 8px;
+}
+.ctrl {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.ctrl:active { background: var(--navy-light); }
+.ctrl-main {
+  width: 82px; height: 82px;
+  background: var(--accent);
+  color: #2a1700;
+  border: none;
+  font-size: 1.7rem;
+}
+.ctrl-main:active { background: var(--accent-soft); }
+
+.options { margin-top: 16px; display: grid; gap: 14px; }
+.opt-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+.opt-row input[type=checkbox] { width: 22px; height: 22px; accent-color: var(--accent); }
+.speed-group { display: flex; gap: 6px; }
+.speed {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text-dim);
+  border-radius: 8px;
+  padding: 5px 9px;
+  font-size: .82rem;
+  cursor: pointer;
+}
+.speed.is-active { background: var(--accent); color: #2a1700; border-color: var(--accent); font-weight: 700; }
+.voice-status { color: var(--text-dim); font-size: .8rem; text-align: center; margin-top: 12px; min-height: 1em; }
+
+/* ---- filter ---- */
+.filter-list { list-style: none; margin: 14px 0; padding: 0; display: grid; gap: 8px; }
+.filter-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+.filter-item.pending { opacity: .5; }
+.filter-item .law-sub { font-size: .74rem; color: var(--text-dim); display: block; }
+.filter-item input[type=checkbox] { width: 22px; height: 22px; accent-color: var(--accent); }
+.primary-btn, .info-block a {
+  color: var(--accent-soft);
+}
+.primary-btn {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  background: var(--accent);
+  color: #2a1700;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ---- info ---- */
+.info-block {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+.info-block h3 { margin: 0 0 6px; font-size: .95rem; color: var(--accent-soft); }
+.info-block p { margin: 4px 0; font-size: .9rem; }
+.credit { color: var(--text-dim); font-size: .82rem !important; }
+.credit small { font-size: .92em; }
+.data-meta { color: var(--text-dim); font-size: .82rem; }
+a { color: var(--accent-soft); }

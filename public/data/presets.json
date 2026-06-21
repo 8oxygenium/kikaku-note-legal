@@ -1,0 +1,72 @@
+{
+  "version": "0.1.0",
+  "presets": [
+    {
+      "id": "roppou",
+      "name": "六法＋会社法",
+      "ready": true,
+      "laws": [
+        { "lawId": "321CONSTITUTION", "name": "日本国憲法", "enabled": true },
+        { "lawId": "129AC0000000089", "name": "民法", "enabled": true },
+        { "lawId": "140AC0000000045", "name": "刑法", "enabled": true },
+        { "lawId": "132AC0000000048", "name": "商法", "enabled": true },
+        { "lawId": "417AC0000000086", "name": "会社法", "enabled": true },
+        { "lawId": "408AC0000000109", "name": "民事訴訟法", "enabled": true },
+        { "lawId": "323AC0000000131", "name": "刑事訴訟法", "enabled": true }
+      ]
+    },
+    {
+      "id": "takken",
+      "name": "宅地建物取引士（宅建）",
+      "ready": true,
+      "laws": [
+        { "lawId": "327AC0000000176", "name": "宅地建物取引業法", "enabled": true },
+        { "lawId": "129AC0000000089", "name": "民法", "enabled": false, "pending": true },
+        { "lawId": "066AC0000000090", "name": "借地借家法", "enabled": false, "pending": true },
+        { "lawId": "037AC0000000069", "name": "建物の区分所有等に関する法律", "enabled": false, "pending": true },
+        { "lawId": "035AC0000000123", "name": "不動産登記法", "enabled": false, "pending": true },
+        { "lawId": "043AC0000000100", "name": "都市計画法", "enabled": false, "pending": true },
+        { "lawId": "025AC0000000201", "name": "建築基準法", "enabled": false, "pending": true },
+        { "lawId": "049AC0000000092", "name": "国土利用計画法", "enabled": false, "pending": true },
+        { "lawId": "027AC0000000229", "name": "農地法", "enabled": false, "pending": true },
+        { "lawId": "029AC0000000119", "name": "土地区画整理法", "enabled": false, "pending": true },
+        { "lawId": "036AC0000000057", "name": "宅地造成及び特定盛土等規制法（盛土規制法）", "enabled": false, "pending": true }
+      ]
+    },
+    {
+      "id": "gyosei",
+      "name": "行政書士",
+      "ready": true,
+      "laws": [
+        { "lawId": "321CONSTITUTION", "name": "日本国憲法", "enabled": true },
+        { "lawId": "405AC0000000088", "name": "行政手続法", "enabled": true },
+        { "lawId": "426AC0000000068", "name": "行政不服審査法", "enabled": true },
+        { "lawId": "337AC0000000139", "name": "行政事件訴訟法", "enabled": true },
+        { "lawId": "322AC0000000125", "name": "国家賠償法", "enabled": true },
+        { "lawId": "322AC0000000067", "name": "地方自治法", "enabled": true },
+        { "lawId": "129AC0000000089", "name": "民法", "enabled": true },
+        { "lawId": "132AC0000000048", "name": "商法", "enabled": true },
+        { "lawId": "417AC0000000086", "name": "会社法", "enabled": true }
+      ]
+    },
+    {
+      "id": "shoshi",
+      "name": "司法書士",
+      "ready": true,
+      "laws": [
+        { "lawId": "321CONSTITUTION", "name": "日本国憲法", "enabled": true },
+        { "lawId": "129AC0000000089", "name": "民法", "enabled": true },
+        { "lawId": "140AC0000000045", "name": "刑法", "enabled": true },
+        { "lawId": "132AC0000000048", "name": "商法", "enabled": true },
+        { "lawId": "417AC0000000086", "name": "会社法", "enabled": true },
+        { "lawId": "408AC0000000109", "name": "民事訴訟法", "enabled": true },
+        { "lawId": "354AC0000000004", "name": "民事執行法", "enabled": true },
+        { "lawId": "401AC0000000091", "name": "民事保全法", "enabled": true },
+        { "lawId": "416AC0000000123", "name": "不動産登記法", "enabled": true },
+        { "lawId": "338AC0000000125", "name": "商業登記法", "enabled": true },
+        { "lawId": "132AC0000000015", "name": "供託法", "enabled": true },
+        { "lawId": "325AC1000000197", "name": "司法書士法", "enabled": true }
+      ]
+    }
+  ]
+}

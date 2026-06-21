@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="96" fill="#1f3a5f"/>
+  <!-- 本 -->
+  <path d="M256 132c-44-26-104-30-150-18-8 2-14 9-14 17v210c0 11 11 19 22 16 40-10 92-7 130 14 2 1 4 1 6 0 38-21 90-24 130-14 11 3 22-5 22-16V131c0-8-6-15-14-17-46-12-106-8-150 18z" fill="#f6f1e7"/>
+  <path d="M256 132v257" stroke="#1f3a5f" stroke-width="10" fill="none"/>
+  <!-- 音波 -->
+  <g stroke="#f0a23b" stroke-width="14" stroke-linecap="round" fill="none">
+    <path d="M372 196c20 18 20 86 0 104"/>
+    <path d="M404 172c34 30 34 134 0 164"/>
+  </g>
+</svg>

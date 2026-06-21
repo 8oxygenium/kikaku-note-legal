@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1f3a5f" />
+  <title>六法読み上げ｜試験対策</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="./icons/icon.svg" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <button class="icon-btn" id="navBack" hidden aria-label="ホームへ戻る">‹</button>
+    <h1 class="app-title">六法読み上げ</h1>
+    <button class="icon-btn" id="navInfo" aria-label="情報・クレジット">ⓘ</button>
+  </header>
+
+  <main id="app">
+
+    <!-- ホーム -->
+    <section class="screen" id="screen-home" data-screen="home">
+      <p class="lead">試験を選んで、条文を聞き流す。</p>
+      <ul class="preset-list" id="presetList"></ul>
+      <p class="hint">耳から条文を入れる学習用。スタートすると、対象法令の条文がランダムに読み上げられます。</p>
+    </section>
+
+    <!-- プレイヤー -->
+    <section class="screen" id="screen-player" data-screen="player" hidden>
+      <div class="player-meta">
+        <span class="law-name" id="lawName">—</span>
+        <button class="text-btn" id="openFilter">法令フィルタ</button>
+      </div>
+      <div class="article-card" id="articleCard">
+        <div class="article-head">
+          <span class="article-no" id="articleNo">—</span>
+          <span class="article-caption" id="articleCaption"></span>
+        </div>
+        <p class="article-text" id="articleText">スタートを押してください。</p>
+      </div>
+
+      <div class="controls">
+        <button class="ctrl" id="btnPrev" aria-label="前へ">◀</button>
+        <button class="ctrl ctrl-main" id="btnPlay" aria-label="再生/停止">▶</button>
+        <button class="ctrl" id="btnNext" aria-label="次へ">▶▶</button>
+      </div>
+
+      <div class="options">
+        <label class="opt-row">
+          <span>自動で次へ</span>
+          <input type="checkbox" id="autoAdvance" />
+        </label>
+        <div class="opt-row">
+          <span>読み上げ速度</span>
+          <div class="speed-group" id="speedGroup">
+            <button class="speed" data-rate="1.0">×1.0</button>
+            <button class="speed is-active" data-rate="1.2">×1.2</button>
+            <button class="speed" data-rate="1.5">×1.5</button>
+            <button class="speed" data-rate="2.0">×2.0</button>
+          </div>
+        </div>
+      </div>
+      <p class="voice-status" id="voiceStatus"></p>
+    </section>
+
+    <!-- フィルタ -->
+    <section class="screen" id="screen-filter" data-screen="filter" hidden>
+      <h2 class="screen-h2">対象法令</h2>
+      <p class="hint">読み上げる法令をON/OFFできます。</p>
+      <ul class="filter-list" id="filterList"></ul>
+      <button class="primary-btn" id="filterDone">決定してプレイヤーへ</button>
+    </section>
+
+    <!-- 情報・クレジット -->
+    <section class="screen" id="screen-info" data-screen="info" hidden>
+      <h2 class="screen-h2">情報・クレジット</h2>
+
+      <div class="info-block">
+        <h3>音声</h3>
+        <p>現在の読み上げは端末内蔵の音声合成（Web Speech API）を使用しています。</p>
+        <p class="credit">VOICEVOX：春日部つむぎ<br><small>※事前生成MP3音声（VOICEVOX）への対応は今後の予定。実際にVOICEVOX音声を使用する版ではこのクレジットを必須表記します。</small></p>
+      </div>
+
+      <div class="info-block">
+        <h3>法令データ</h3>
+        <p>出典：<a href="https://laws.e-gov.go.jp" target="_blank" rel="noopener">e-Gov法令検索</a></p>
+        <p class="credit">政府標準利用規約（第2.0版）に基づき利用。法令本文は著作権の対象外（著作権法第13条）です。</p>
+        <p id="dataMeta" class="data-meta"></p>
+      </div>
+
+      <div class="info-block">
+        <h3>このアプリについて</h3>
+        <p>各種試験の条文をランダムに読み上げる聞き流し学習アプリです。</p>
+        <p class="credit">アプリバージョン：<span id="appVersion">0.1.0</span><br>制作：杉山隆郎（HANSODE）</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="./playback.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

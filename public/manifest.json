@@ -1,0 +1,20 @@
+{
+  "name": "六法読み上げ｜試験対策",
+  "short_name": "六法読み上げ",
+  "description": "各種試験の条文をランダムに読み上げる聞き流し学習アプリ（宅建MVP）。",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f1b2d",
+  "theme_color": "#1f3a5f",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

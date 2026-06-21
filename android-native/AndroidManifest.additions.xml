@@ -1,0 +1,23 @@
+<!--
+  AndroidManifest への追記内容（追加指示§4のチェックリスト）。
+  実ファイル: android/app/src/main/AndroidManifest.xml
+  下記を「該当箇所」へマージする（このファイルはそのままでは使わない＝差分の見本）。
+-->
+
+<!-- ① <manifest> 直下、<application> の外側に権限を追加 -->
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+<uses-permission android:name="android.permission.WAKE_LOCK" />
+<!-- Android 13(API33)+ : メディア通知の表示にランタイム許可が要る -->
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+
+<!-- ② <application> ... </application> の内側に Service を宣言 -->
+<service
+    android:name=".PlaybackService"
+    android:exported="true"
+    android:foregroundServiceType="mediaPlayback">
+    <intent-filter>
+        <action android:name="androidx.media3.session.MediaSessionService" />
+    </intent-filter>
+</service>

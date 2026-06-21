@@ -1,0 +1,19 @@
+# 依存・生成物
+node_modules/
+.wrangler/
+dist/
+
+# Capacitor が生成するネイティブプロジェクト（android-native/ の参照ファイルから組み立てる）
+android/
+ios/
+
+# 授業用にローカル生成する大量Markdown（fetch-laws.mjs で再生成可能・サイトには含めない）
+export/
+
+# 事前生成MP3（容量大。Android背景再生用にローカル/別管理）
+public/audio/
+
+# OS/エディタ
+.DS_Store
+Thumbs.db
+*.log

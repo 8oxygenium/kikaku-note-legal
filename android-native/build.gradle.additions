@@ -1,0 +1,15 @@
+// android/app/build.gradle の dependencies { ... } に追記する Media3 依存。
+// バージョンは執筆時点の安定版の目安。Android Studio の提案で最新安定版に合わせてよい。
+
+dependencies {
+    def media3 = "1.4.1"
+    implementation "androidx.media3:media3-exoplayer:$media3"
+    implementation "androidx.media3:media3-session:$media3"
+    implementation "com.google.guava:guava:33.2.1-android" // ListenableFuture 用（既に入っていれば不要）
+}
+
+// 補足:
+// - compileSdk / targetSdk は 34 以上（FOREGROUND_SERVICE_MEDIA_PLAYBACK は API34 で必須化）。
+// - Kotlin を使うので android/app/build.gradle に kotlin プラグインが要る場合がある:
+//     apply plugin: 'org.jetbrains.kotlin.android'
+//   （Capacitor の Java テンプレートに Kotlin ファイルを足すため。Android Studio が補完を促す）

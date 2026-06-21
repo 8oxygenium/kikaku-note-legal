@@ -1,0 +1,11 @@
+{
+  "appId": "com.hansode.roppou",
+  "appName": "六法読み上げ",
+  "webDir": "public",
+  "android": {
+    "allowMixedContent": false
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}
