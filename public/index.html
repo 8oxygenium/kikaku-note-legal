@@ -41,6 +41,7 @@
       </div>
 
       <div class="controls">
+        <button class="ctrl ctrl-loop" id="btnLoop" aria-label="1条をリピート" title="1条をくり返す（ループ）">🔁</button>
         <button class="ctrl" id="btnPrev" aria-label="前へ">◀</button>
         <button class="ctrl ctrl-main" id="btnPlay" aria-label="再生/停止">▶</button>
         <button class="ctrl" id="btnNext" aria-label="次へ">▶▶</button>
@@ -48,8 +49,8 @@
 
       <div class="options">
         <label class="opt-row">
-          <span>自動で次へ</span>
-          <input type="checkbox" id="autoAdvance" />
+          <span>自動で次へ<small class="opt-note">（睡眠学習向け・初期ON）</small></span>
+          <input type="checkbox" id="autoAdvance" checked />
         </label>
         <div class="opt-row">
           <span>読み上げ速度</span>

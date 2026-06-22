@@ -39,6 +39,9 @@ const Playback = (() => {
     async prev()          { await NativePlugin.previous(); },
     async stop()          { await NativePlugin.stop(); },
     async setRate(r)      { await NativePlugin.setRate({ rate: r }); },
+    // ネイティブは自動送りを所有。ループ/自動送りは将来 plugin の repeatMode に橋渡しする。
+    async setAutoAdvance(v) { if (NativePlugin.setAutoAdvance) await NativePlugin.setAutoAdvance({ enabled: !!v }); },
+    async setLoop(v)        { if (NativePlugin.setLoop) await NativePlugin.setLoop({ enabled: !!v }); },
   };
 
   /* ============ Web・バックエンド（Web Speech / 前面専用） ============ */
@@ -47,6 +50,8 @@ const Playback = (() => {
     let index = -1;
     let rate = 1.2;
     let playing = false;
+    let autoAdvance = true; // 初期ON（睡眠学習向け）
+    let loop = false;       // 1条をくり返す
 
     function synthAvailable() { return 'speechSynthesis' in window; }
 
@@ -72,7 +77,12 @@ const Playback = (() => {
       u.rate = rate;
       const v = pickJaVoice();
       if (v) u.voice = v;
-      u.onend = () => { if (playing) advance(); };
+      u.onend = () => {
+        if (!playing) return;
+        if (loop) speakCurrent();            // 1条ループ：同じ条をくり返す
+        else if (autoAdvance) advance();     // 自動で次へ
+        else { playing = false; cbs.onStateChanged({ playing: false }); } // 1回読んで停止
+      };
       u.onerror = () => { playing = false; cbs.onStateChanged({ playing: false }); };
       playing = true; cbs.onStateChanged({ playing: true });
       window.speechSynthesis.speak(u);
@@ -105,6 +115,8 @@ const Playback = (() => {
       async prev() { if (index > 0) { index--; speakCurrent(); } },
       async stop() { if (synthAvailable()) window.speechSynthesis.cancel(); playing = false; cbs.onStateChanged({ playing: false }); },
       async setRate(r) { rate = r; }, // 次の発話から反映
+      async setAutoAdvance(v) { autoAdvance = !!v; },
+      async setLoop(v) { loop = !!v; },
     };
   })();
 
@@ -121,5 +133,7 @@ const Playback = (() => {
     prev: () => backend.prev(),
     stop: () => backend.stop(),
     setRate: (r) => backend.setRate(r),
+    setAutoAdvance: (v) => backend.setAutoAdvance(v),
+    setLoop: (v) => backend.setLoop(v),
   };
 })();

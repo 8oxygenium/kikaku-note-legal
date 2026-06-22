@@ -159,6 +159,18 @@ body {
   font-size: 1.7rem;
 }
 .ctrl-main:active { background: var(--accent-soft); }
+.ctrl-loop { font-size: 1rem; position: relative; }
+.ctrl-loop.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.ctrl-loop.is-active::after {
+  content: "1条";
+  position: absolute;
+  bottom: -16px; left: 50%; transform: translateX(-50%);
+  font-size: .6rem; color: var(--accent-soft); white-space: nowrap;
+}
+.opt-note { color: var(--text-dim); font-size: .72rem; font-weight: 400; margin-left: 4px; }
 
 .options { margin-top: 16px; display: grid; gap: 14px; }
 .opt-row {

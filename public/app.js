@@ -22,10 +22,15 @@ const state = {
   rate: 1.2,
   playing: false,
   started: false,
+  autoAdvance: true,      // 自動で次へ（初期ON・睡眠学習向け）
+  loop: false,            // 1条をループ
+  currentScreen: 'home',
 };
 
 /* ---------- 画面遷移 ---------- */
 const screens = ['home', 'player', 'filter', 'info'];
+
+// 画面の見た目だけを切り替える（副作用なし）
 function show(name) {
   screens.forEach(s => {
     const el = document.getElementById('screen-' + s);
@@ -35,6 +40,31 @@ function show(name) {
   document.getElementById('navBack').hidden = (name === 'home');
   window.scrollTo(0, 0);
 }
+
+/* ---------- 履歴ルーティング（＜ボタンもブラウザ戻るも効くように） ---------- */
+function hashScreen() {
+  const h = location.hash.replace('#', '');
+  return ['player', 'filter', 'info'].includes(h) ? h : 'home';
+}
+
+// ハッシュ変化（＜ボタン/ブラウザ戻る/進む）に応じて画面と副作用を適用
+function applyScreen(name) {
+  // プリセット未起動でplayer/filterへ来たらホームに矯正
+  if ((name === 'player' || name === 'filter') && !state.currentPreset) name = 'home';
+  if (name === 'home') { Playback.stop(); state.currentPreset = null; }
+  if (name === 'info') renderInfo();
+  if (name === 'filter') renderFilter();
+  show(name);
+}
+
+// 前進ナビ（ホーム→player、→info、→filter）。ハッシュを積んで履歴を作る。
+function goTo(name) {
+  const target = name === 'home' ? '' : name;
+  if (location.hash.replace('#', '') === target) applyScreen(name);
+  else location.hash = target; // hashchange→applyScreen
+}
+
+window.addEventListener('hashchange', () => applyScreen(hashScreen()));
 
 /* ---------- データ読み込み ---------- */
 async function loadPresets() {
@@ -174,9 +204,9 @@ async function startPreset(preset) {
     laws: preset.laws.map(l => ({ ...l })),
   };
   await buildPool();
-  show('player');
   setVoiceStatus();
   await startQueue();
+  goTo('player');
 }
 
 async function startQueue() {
@@ -225,26 +255,23 @@ function renderInfo() {
 
 /* ---------- イベント結線 ---------- */
 function wire() {
-  document.getElementById('navInfo').addEventListener('click', () => { renderInfo(); show('info'); });
-  document.getElementById('navBack').addEventListener('click', () => {
-    if (state.currentScreen === 'player') {
-      // プレイヤーからはホームへ戻る（再生を止めてプリセット選択へ）
-      Playback.stop();
-      state.currentPreset = null;
-      show('home');
-    } else {
-      // 情報/フィルタからはプレイヤーへ戻る（再生は止めない）。プリセット未起動ならホーム。
-      show(state.currentPreset ? 'player' : 'home');
-    }
-  });
+  document.getElementById('navInfo').addEventListener('click', () => goTo('info'));
+  // ＜ボタンはブラウザ履歴を1つ戻す（ブラウザの戻るボタンと同じ挙動に統一）
+  document.getElementById('navBack').addEventListener('click', () => history.back());
 
   document.getElementById('btnNext').addEventListener('click', () => Playback.next());
   document.getElementById('btnPrev').addEventListener('click', () => Playback.prev());
   document.getElementById('btnPlay').addEventListener('click', () => Playback.playPause());
 
   document.getElementById('autoAdvance').addEventListener('change', e => {
-    // キュー方式では常に自動送り。トグルOFF時は末尾で止める挙動に使える（将来）。
     state.autoAdvance = e.target.checked;
+    Playback.setAutoAdvance(state.autoAdvance);
+  });
+
+  document.getElementById('btnLoop').addEventListener('click', () => {
+    state.loop = !state.loop;
+    Playback.setLoop(state.loop);
+    document.getElementById('btnLoop').classList.toggle('is-active', state.loop);
   });
 
   document.getElementById('speedGroup').addEventListener('click', e => {
@@ -255,17 +282,17 @@ function wire() {
     document.querySelectorAll('.speed').forEach(s => s.classList.toggle('is-active', s === b));
   });
 
-  document.getElementById('openFilter').addEventListener('click', () => { renderFilter(); show('filter'); });
+  document.getElementById('openFilter').addEventListener('click', () => goTo('filter'));
   document.getElementById('filterDone').addEventListener('click', async () => {
     Playback.stop();
     await buildPool();
-    show('player');
     setVoiceStatus();
     await startQueue();
     if (state.pool.length === 0) {
       document.getElementById('articleText').textContent =
         '対象法令が選ばれていません。フィルタで法令をONにしてください。';
     }
+    history.back(); // フィルタは player から開くので、戻ると player に復帰
   });
 }
 
@@ -273,6 +300,11 @@ function wire() {
 async function init() {
   wire();
   await Playback.init({ onTrackChanged, onQueueLow, onStateChanged });
+  // 既定値を再生層へ同期（自動で次へ=ON、ループ=OFF）。UIの初期状態と一致させる。
+  document.getElementById('autoAdvance').checked = state.autoAdvance;
+  Playback.setAutoAdvance(state.autoAdvance);
+  Playback.setLoop(state.loop);
+  document.getElementById('btnLoop').classList.toggle('is-active', state.loop);
   try {
     await loadPresets();
     renderHome();
@@ -281,6 +313,8 @@ async function init() {
     document.getElementById('presetList').innerHTML =
       '<li style="color:#f6c074">データの読み込みに失敗しました。</li>';
   }
+  // 直リンク（#info 等）にも対応しつつ、基本はホームから
+  history.replaceState({}, '', location.pathname + location.search);
   show('home');
 
   if ('serviceWorker' in navigator) {
