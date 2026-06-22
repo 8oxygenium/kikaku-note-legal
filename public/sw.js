@@ -4,7 +4,7 @@
  *  → オフライン時のみキャッシュから配信。
  * 表示が更新されない場合は CACHE 版を上げると確実に切り替わる。
  */
-const CACHE = 'roppou-v0.1.3';
+const CACHE = 'roppou-v0.1.4';
 const SHELL = [
   './',
   './index.html',

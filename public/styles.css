@@ -64,6 +64,22 @@ body {
 }
 .icon-btn:active { background: rgba(255,255,255,0.12); }
 
+/* TOPボタン（左上・常に確実にホームへ戻る） */
+.top-btn {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #2a1700;
+  font-size: .82rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 7px 14px;
+  cursor: pointer;
+  letter-spacing: .04em;
+}
+.top-btn:active { background: var(--accent-soft); }
+
+.ver-tag { color: var(--text-dim); font-size: .72rem; margin-top: 24px; opacity: .7; }
+
 /* ---- layout ---- */
 #app {
   flex: 1;

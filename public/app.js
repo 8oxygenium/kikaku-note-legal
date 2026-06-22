@@ -9,7 +9,7 @@
  */
 'use strict';
 
-const APP_VERSION = '0.1.0';
+const APP_VERSION = '0.1.4';
 const QUEUE_CHUNK = 40;   // 一度にキューへ積む条数
 const DATA_BASE = './data';
 
@@ -37,7 +37,7 @@ function show(name) {
     if (el) el.hidden = (s !== name);
   });
   state.currentScreen = name;
-  document.getElementById('navBack').hidden = (name === 'home');
+  document.getElementById('navHome').hidden = (name === 'home');
   window.scrollTo(0, 0);
 }
 
@@ -65,6 +65,15 @@ function goTo(name) {
 }
 
 window.addEventListener('hashchange', () => applyScreen(hashScreen()));
+
+// TOPボタン：履歴に依存せず、必ずホーム（試験選択）へ戻す確実な経路
+function goHome() {
+  Playback.stop();
+  state.currentPreset = null;
+  state.started = false;
+  try { history.replaceState({}, '', location.pathname + location.search); } catch (e) {}
+  show('home');
+}
 
 /* ---------- データ読み込み ---------- */
 async function loadPresets() {
@@ -257,7 +266,7 @@ function renderInfo() {
 function wire() {
   document.getElementById('navInfo').addEventListener('click', () => goTo('info'));
   // ＜ボタンはブラウザ履歴を1つ戻す（ブラウザの戻るボタンと同じ挙動に統一）
-  document.getElementById('navBack').addEventListener('click', () => history.back());
+  document.getElementById('navHome').addEventListener('click', goHome);
 
   document.getElementById('btnNext').addEventListener('click', () => Playback.next());
   document.getElementById('btnPrev').addEventListener('click', () => Playback.prev());
@@ -305,6 +314,7 @@ async function init() {
   Playback.setAutoAdvance(state.autoAdvance);
   Playback.setLoop(state.loop);
   document.getElementById('btnLoop').classList.toggle('is-active', state.loop);
+  document.getElementById('homeVer').textContent = APP_VERSION;
   try {
     await loadPresets();
     renderHome();
@@ -317,9 +327,23 @@ async function init() {
   history.replaceState({}, '', location.pathname + location.search);
   show('home');
 
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js').catch(err => console.warn('SW登録失敗', err));
-  }
+  registerServiceWorker();
+}
+
+/* 新バージョンを検知したら自動でリロード（古いキャッシュに張り付かないように） */
+function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  let reloaded = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (reloaded) return;
+    reloaded = true;
+    location.reload();
+  });
+  // SWは install で skipWaiting / activate で clients.claim するので、
+  // 新版を入れると controllerchange が発火 → 上のハンドラで自動リロード。
+  navigator.serviceWorker.register('./sw.js')
+    .then(reg => reg.update())
+    .catch(err => console.warn('SW登録失敗', err));
 }
 
 document.addEventListener('DOMContentLoaded', init);
